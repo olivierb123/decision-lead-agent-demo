@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: agent
+services:
+    ai-project:
+        host: azure.ai.project
+        deployments:
+            - model:
+                format: OpenAI
+                name: gpt-4o
+                version: "2024-11-20"
+              name: gpt-4o
+              sku:
+                capacity: 10
+                name: GlobalStandard
+    foundryiq-docs-agent:
+        project: .
+        host: azure.ai.agent
+        language: python
+        uses:
+            - ai-project
+        codeConfiguration:
+            dependencyResolution: remote_build
+            entryPoint: server.py
+            runtime: python_3_13
+        container:
+            resources:
+                cpu: "0.5"
+                memory: 1Gi
+        env:
+            AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME}
+            AZURE_SEARCH_ENDPOINT: ${AZURE_SEARCH_ENDPOINT}
+            AZURE_SEARCH_INDEX_NAME: ${AZURE_SEARCH_INDEX_NAME}
+            AZURE_SEARCH_SEMANTIC_CONFIG_NAME: ${AZURE_SEARCH_SEMANTIC_CONFIG_NAME}
+        kind: hosted
+        name: foundryiq-docs-agent
+        protocols:
+            - protocol: responses
+              version: 2.0.0
+    fabriciq-sales-agent:
+        project: .
+        host: azure.ai.agent
+        language: python
+        uses:
+            - ai-project
+        codeConfiguration:
+            dependencyResolution: remote_build
+            entryPoint: fabric_server.py
+            runtime: python_3_13
+        container:
+            resources:
+                cpu: "0.5"
+                memory: 1Gi
+        env:
+            AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME}
+            FABRIC_TENANT_ID: ${FABRIC_TENANT_ID}
+            FABRIC_CLIENT_ID: ${FABRIC_CLIENT_ID}
+            FABRIC_CLIENT_SECRET: ${FABRIC_CLIENT_SECRET}
+            FABRIC_WORKSPACE_ID: ${FABRIC_WORKSPACE_ID}
+            FABRIC_DATA_AGENT_ID: ${FABRIC_DATA_AGENT_ID}
+        kind: hosted
+        name: fabriciq-sales-agent
+        protocols:
+            - protocol: responses
+              version: 2.0.0
+    webiq-climate-agent:
+        project: .
+        host: azure.ai.agent
+        language: python
+        uses:
+            - ai-project
+        codeConfiguration:
+            dependencyResolution: remote_build
+            entryPoint: webiq_server.py
+            runtime: python_3_13
+        container:
+            resources:
+                cpu: "0.5"
+                memory: 1Gi
+        env:
+            AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME}
+            WEBIQ_API_KEY: ${WEBIQ_API_KEY}
+        kind: hosted
+        name: webiq-climate-agent
+        protocols:
+            - protocol: responses
+              version: 2.0.0
+    synergy-agent:
+        project: .
+        host: azure.ai.agent
+        language: python
+        uses:
+            - ai-project
+        codeConfiguration:
+            dependencyResolution: remote_build
+            entryPoint: synergy_server.py
+            runtime: python_3_13
+        container:
+            resources:
+                cpu: "0.5"
+                memory: 1Gi
+        env:
+            AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME}
+        kind: hosted
+        name: synergy-agent
+        protocols:
+            - protocol: responses
+              version: 2.0.0
+infra:
+    provider: microsoft.foundry

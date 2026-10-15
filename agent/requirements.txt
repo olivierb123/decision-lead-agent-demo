@@ -1,0 +1,8 @@
+agent-framework[azure-ai]
+agent-framework-foundry>=1.13.1
+agent-framework-foundry-hosting
+agent-framework-azure-ai-search
+azure-identity
+mcp
+python-dotenv
+requests
