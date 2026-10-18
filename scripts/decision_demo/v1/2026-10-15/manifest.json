@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "datasetVersion": "v1",
+  "isSynthetic": true,
+  "asOfDate": "2026-10-15",
+  "generatedAt": "2026-10-16T00:37:29.027538Z",
+  "effectiveAt": "2026-10-14T23:59:59Z",
+  "reportingPeriodLabel": "2026-10-01 through 2026-10-14 (synthetic complete 14-day window)",
+  "reportingPeriodStart": "2026-10-01",
+  "reportingPeriodEnd": "2026-10-14",
+  "fiscalCalendar": "Fiscal year ends June 30; July 2026 is FY27 Q1. This is an explicit demo calendar.",
+  "grain": "One sales row per territory per calendar day, including zero/non-working days; SUM revenue and quota once per reporting window.",
+  "territoryTotals": [
+    {
+      "territory": "Central",
+      "revenue": 300000,
+      "quota": 350000,
+      "days": 14
+    },
+    {
+      "territory": "South",
+      "revenue": 110000,
+      "quota": 210000,
+      "days": 14
+    },
+    {
+      "territory": "West",
+      "revenue": 210000,
+      "quota": 200000,
+      "days": 14
+    }
+  ],
+  "limitations": [
+    "All companies, seller activity, financial amounts, and buying signals are synthetic scenarios, not customer records.",
+    "generatedAt is file generation time, NOT a semantic-model refresh or independent verification timestamp.",
+    "The reporting window is complete; it is not a complete fiscal quarter or necessarily a full month.",
+    "Opportunity records are not consumed by the current territory-only live adapter.",
+    "Web hazards, account geography, and product-document dates are not fabricated by this generator."
+  ],
+  "files": {
+    "sales_performance.csv": {
+      "rows": 42,
+      "sha256": "778c4e1646531a2c38a8185492fd0c5a5379883fab16e53592113566434f75dd"
+    },
+    "decision_opportunities.csv": {
+      "rows": 6,
+      "sha256": "551fbea1f4b7ca680bdbb38098bcfaf2797db708ab9e3af928ab39d87065e50e"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Decision Docs Agent (WSL)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": { "host": "localhost", "port": 5678 },
+      "pathMappings": [
+        { "localRoot": "${workspaceFolder}/agent", "remoteRoot": "/home/olivi/decision-lead-agent-demo/agent" }
+      ],
+      "preLaunchTask": "Start Decision Docs Agent Debug Server",
+      "justMyCode": true
+    },
+    {
+      "name": "Debug Decision Workflow (WSL)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": { "host": "localhost", "port": 5679 },
+      "pathMappings": [
+        { "localRoot": "${workspaceFolder}", "remoteRoot": "/home/olivi/decision-lead-agent-demo" }
+      ],
+      "preLaunchTask": "Start Decision Workflow Debug Server",
+      "justMyCode": true
+    }
+  ]
+}

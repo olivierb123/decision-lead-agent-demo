@@ -36,3 +36,28 @@ export const docs = [
     lastUpdated: '2026-09-15',
   },
 ]
+
+export const decisionDemoDocs = docs.map((doc) => {
+  const docId = `DECISION-DEMO-V1-${doc.docId}`
+  const effectiveAt = `${doc.lastUpdated}T00:00:00Z`
+  const timestampProvenance = 'Simulated UTC midnight for this synthetic fixture; the original document has only a calendar date, with no verified time or timezone.'
+  return {
+    ...doc,
+    id: docId,
+    docId,
+    originalDocId: doc.docId,
+    originalLastUpdated: doc.lastUpdated,
+    datasetVersion: 'v1',
+    isSynthetic: true,
+    dataClassification: 'SYNTHETIC_DEMO',
+    effectiveAt,
+    timestampProvenance,
+    content: [
+      'SYNTHETIC DEMO PRODUCT DOCUMENT. Not a verified current product publication.',
+      `${doc.title}. ${doc.summary} (type: ${doc.type}, audience: ${doc.audience})`,
+      `docId: ${docId}; originalDocId: ${doc.docId}; original lastUpdated: ${doc.lastUpdated} (date precision only).`,
+      `Synthetic fixture effectiveAt: ${effectiveAt}; timezone: UTC; isSynthetic: true; datasetVersion: v1.`,
+      timestampProvenance,
+    ].join('\n'),
+  }
+})

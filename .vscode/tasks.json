@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Decision Docs Agent Debug Server",
+      "type": "process",
+      "command": "wsl.exe",
+      "args": [
+        "-d", "Ubuntu", "--cd", "/home/olivi/decision-lead-agent-demo/agent", "--exec",
+        "env",
+        "FOUNDRY_PROJECT_ENDPOINT=https://cog-wkedqxabla6qo.services.ai.azure.com/api/projects/agent-dev",
+        "AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4o",
+        "AZURE_SEARCH_ENDPOINT=https://srch-wkedqxabla6qo.search.windows.net",
+        "AZURE_SEARCH_INDEX_NAME=decision-demo-product-docs-v1",
+        "AZURE_SEARCH_SEMANTIC_CONFIG_NAME=decision-demo-product-docs-semantic-config",
+        "PORT=8089",
+        ".venv/bin/python", "-m", "debugpy", "--listen", "127.0.0.1:5678", "server.py"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "Application startup complete|[Rr]unning on|Started server process"
+        }
+      }
+    },
+    {
+      "label": "Start Decision Workflow Debug Server",
+      "type": "process",
+      "command": "wsl.exe",
+      "args": [
+        "-d", "Ubuntu", "--cd", "/home/olivi/decision-lead-agent-demo", "--exec",
+        ".venv/bin/python", "-m", "debugpy", "--listen", "127.0.0.1:5679",
+        "-m", "uvicorn", "decision_server:app", "--app-dir", "agent", "--host", "127.0.0.1", "--port", "8009"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "Application startup complete"
+        }
+      }
+    }
+  ]
+}

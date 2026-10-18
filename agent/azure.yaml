@@ -37,6 +37,31 @@ services:
         protocols:
             - protocol: responses
               version: 2.0.0
+    decision-foundryiq-docs-agent:
+        project: .
+        host: azure.ai.agent
+        language: python
+        description: Retrieve explicitly synthetic FieldForge product documents for the isolated decision demo, preserving source IDs, dates, timestamp provenance, and roadmap distinctions.
+        uses:
+            - ai-project
+        codeConfiguration:
+            dependencyResolution: remote_build
+            entryPoint: server.py
+            runtime: python_3_13
+        container:
+            resources:
+                cpu: "0.5"
+                memory: 1Gi
+        env:
+            AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME}
+            AZURE_SEARCH_ENDPOINT: ${AZURE_SEARCH_ENDPOINT}
+            AZURE_SEARCH_INDEX_NAME: decision-demo-product-docs-v1
+            AZURE_SEARCH_SEMANTIC_CONFIG_NAME: decision-demo-product-docs-semantic-config
+        kind: hosted
+        name: decision-foundryiq-docs-agent
+        protocols:
+            - protocol: responses
+              version: 2.0.0
     fabriciq-sales-agent:
         project: .
         host: azure.ai.agent

@@ -1,0 +1,8 @@
+agent-framework-core==1.22.0
+azure-identity>=1.26.0,<2
+python-dotenv>=1.2.4,<2
+requests>=2.34.2,<3
+fastapi>=0.143.2,<1
+uvicorn>=0.54.0,<1
+httpx>=0.28,<1
+debugpy>=1.8,<2

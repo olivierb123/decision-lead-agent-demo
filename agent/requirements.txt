@@ -6,3 +6,4 @@ azure-identity
 mcp
 python-dotenv
 requests
+debugpy

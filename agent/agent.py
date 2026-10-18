@@ -25,6 +25,22 @@ INSTRUCTIONS = (
     "retrieved context doesn't cover the question, say so plainly instead of guessing."
 )
 
+DECISION_DOCS_INSTRUCTIONS = (
+    " This index contains SYNTHETIC_DEMO fixtures, not verified current product publications. "
+    "Return exactly one JSON object with text, effectiveAt and references. No Markdown fences, "
+    "headings, or explanation outside that object. The text field MUST begin: "
+    "SYNTHETIC DEMO: effectiveAt values simulate UTC midnight; these are not verified publication times. "
+    "The original publication timestamp is unknown, but the separate synthetic fixture has its own "
+    "explicit effectiveAt and UTC timezone. Return that stored fixture timestamp, clearly labeled "
+    "synthetic, rather than returning null merely because the original publication was date-only. "
+    "For EACH document used or cited, include its docId, originalLastUpdated "
+    "(calendar-date precision only), exact retrieved effectiveAt, and timestampProvenance in text. "
+    "When the requested JSON has a single effectiveAt, use the earliest retrieved effectiveAt "
+    "among ALL cited documents, not the date of the highest-ranked search result. If any cited "
+    "document lacks an explicit timestamp/timezone, return null instead. Never invent metadata. "
+    "Keep currently described capabilities separate from roadmap items and retain uncertainty."
+)
+
 
 def build_agent() -> Agent:
     """Build the Foundry IQ docs agent: a Foundry-hosted chat model grounded by a
@@ -45,7 +61,10 @@ def build_agent() -> Agent:
     )
     return Agent(
         chat_client,
-        instructions=INSTRUCTIONS,
+        instructions=(INSTRUCTIONS + DECISION_DOCS_INSTRUCTIONS
+                      if SEARCH_INDEX_NAME == "decision-demo-product-docs-v1" else INSTRUCTIONS),
+        default_options=({"response_format": {"type": "json_object"}, "temperature": 0}
+                 if SEARCH_INDEX_NAME == "decision-demo-product-docs-v1" else None),
         name="FoundryIQDocsAgent",
         context_providers=[search_provider],
     )

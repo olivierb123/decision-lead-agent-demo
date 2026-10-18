@@ -100,6 +100,13 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 5175,
       strictPort: true,
+      proxy: {
+        '/api/decision-workflow': {
+          target: env.DECISION_WORKFLOW_URL || 'http://127.0.0.1:8008',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/decision-workflow/, ''),
+        },
+      },
     },
   }
 })
