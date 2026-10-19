@@ -4,6 +4,46 @@ An independent starting point based on [microsoftiq-lead-agent-demo](https://git
 
 The demo uses Microsoft Agent Framework workflows to compare deterministic rules, a general-purpose LLM, and Microsoft-Decision-1 on daily seller attention allocation. The primary page defaults to retrieving exact synthetic scenario records from an isolated Azure AI Search index through the local MAF backend. The separate live IQ mode calls the existing Fabric IQ, Web IQ, and Foundry IQ agents. Live retrieval has been exercised, and real GPT-4o and Decision-1 inference calls have passed validation against the explicit synthetic fixture. Decision-1 was [approved and deployed](./docs/decision-model-plan.md#decision-1-deployment-approval) on October 15, 2026, with one DataZoneStandard unit. No predictions are simulated, and no quality or cost advantage has been established. The inherited stage descriptions below are historical, not separate screens in the current UI.
 
+## Workflow At A Glance
+
+The next-best-action question drives the choice of mechanism: use rules for explicit conditions, evaluate a bounded decision model for contextual choices, and use generation with tools when the output needs a plan. Shared policy and output validation surround every approach.
+
+```mermaid
+flowchart TD
+	S[Versioned synthetic snapshot] --> P[Validate evidence and apply shared policy]
+	P --> R[Deterministic rules]
+	P --> D[Microsoft-Decision-1]
+	P --> L[GPT-4o]
+	R --> V[Validate each result]
+	D --> V
+	L --> V
+	V --> O[Compare actions, ranking, time, and estimated token cost]
+```
+
+All three branches receive isolated copies of the same prepared evidence. Contact pauses, unverified identities, and missing or stale evidence are policy decisions, not constraints a model can override. See the [story-first blog draft](./docs/blog-rules-decision-models-llms.md) for the next-best-action use case and exact implementation excerpts.
+
+## Workbench Screenshots
+
+Captured from the local workbench on October 19, 2026, before running inference. These are explicitly labeled local synthetic fixture previews, not live CRM records or completed model results. The simulation date remains October 15, 2026; screenshot capture does not refresh the evidence. No hosted inference was invoked to capture these images.
+
+### Routine Decision
+
+Start with explicit buyer interest, current product fit, and shared contact restrictions. The workbench shows the account context, comparison table, and deterministic execution flow before **Compare approaches** is pressed.
+
+![Routine scenario preview with four synthetic accounts, unassessed comparison columns, and the rules execution flow](./docs/images/routine-decision.png)
+
+### Contextual Decision
+
+Contrast an exploratory discovery invitation with a funded, ready pilot. The Decision-1 flow shows the bounded action space; no picked action or score is attributed to the model before inference.
+
+![Contextual scenario preview contrasting discovery and pilot readiness, with the Decision-1 execution flow and pending bounded choices](./docs/images/contextual-decision.png)
+
+### Decision Plus A Plan
+
+Add rollout constraints and a generated-plan requirement. The LLM execution flow distinguishes the calculation tool and independent checks from model generation; a plan appears only after a successful comparison.
+
+![Rollout scenario preview with synthetic account context, unassessed comparison columns, and the LLM planning execution flow](./docs/images/decision-plus-plan.png)
+
 ## Local project setup
 
 Open `decision-lead-agent-demo.code-workspace` in VS Code. In WSL, run `npm ci` followed by `npm run dev` to start the frontend.
